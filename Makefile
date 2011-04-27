@@ -12,7 +12,7 @@ CFLAGS = $(DEBBUG) $(WARN)
 INCPATH = -Icunit/include -Iaes/include
 TARGET = example_main.elf
 SIMTARGET = example_main
-CFILES = $(wildcard src/*.c)
+TFILES = $(wildcard aes/tests/*.c)
 HFILES = $(wildcard */include/*.h)
 
 all: $(TARGET)
@@ -20,11 +20,11 @@ all: $(TARGET)
 clean:
 	rm -r $(TARGET) $(SIMTARGET)
 
-$(TARGET): $(CFILES) $(HFILES)
-	@$(CC_CROSS) $(CFLAGS) $(INCPATH) -o $(TARGET) $(CFILES)
+$(TARGET): $(TFILES) $(HFILES)
+	@$(CC_CROSS) $(CFLAGS) $(INCPATH) -o $(TARGET) $(TFILES)
 
-$(SIMTARGET): $(CFILES) $(HFILES)
-	$(CC) $(CFLAGS) $(INCPATH) -o $(SIMTARGET) $(CFILES)
+$(SIMTARGET): $(TFILES) $(HFILES)
+	$(CC) $(CFLAGS) $(INCPATH) -o $(SIMTARGET) $(TFILES)
 
 run: $(TARGET)
 	@echo "press a key"

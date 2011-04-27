@@ -22,13 +22,15 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 $(TARGET): $(TFILES) $(HFILES)
-	@$(CC_CROSS) $(CFLAGS) $(INCPATH) -o $(TARGET) $(TFILES)
+	@mkdir -p $(BUILD_DIR)
+	$(CC_CROSS) $(CFLAGS) $(INCPATH) -o $(TARGET) $(TFILES)
 
 $(SIMTARGET): $(TFILES) $(HFILES)
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(INCPATH) -o $(SIMTARGET) $(TFILES)
 
 run: $(TARGET)
-	@echo "press a key"
+	@echo "Run as root: (cd `pwd`; avr32program program -e -v -f0,8Mb $(TARGET) && avr32gdbproxy -f 0,8Mb –a)"
 	@read l
 	$(GDB_CROSS) $(GDB_CMD_CROSS) $(TARGET)
 

@@ -1,2 +1,3 @@
-break CU_assertImplementation
+break CU_assertImplementationFail
+break CU_assertIntEqualImplementationFail
 run

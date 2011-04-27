@@ -34,7 +34,36 @@ int inv_s[256] =
  ,0xa0 ,0xe0 ,0x3b ,0x4d ,0xae ,0x2a ,0xf5 ,0xb0 ,0xc8 ,0xeb ,0xbb ,0x3c ,0x83 ,0x53 ,0x99 ,0x61
  ,0x17 ,0x2b ,0x04 ,0x7e ,0xba ,0x77 ,0xd6 ,0x26 ,0xe1 ,0x69 ,0x14 ,0x63 ,0x55 ,0x21 ,0x0c ,0x7d};
 
-int SubBytes(int byte)
+void SubBytes(int *buf)
 {
-	return s[byte];
+  int i, tmp;
+  for (i = 0; i < 4*4; i++)
+  {
+    buf[i] = s[buf[i]];
+  }
 }
+
+void ShiftRows(int *buf)
+{
+	int tmp;
+	tmp = buf[4+0];
+	buf[4+0] = buf[4+1];
+	buf[4+1] = buf[4+2];
+	buf[4+2] = buf[4+3];
+	buf[4+3] = tmp;
+
+	tmp = buf[8+0];
+	buf[8+0] = buf[8+2];
+	buf[8+2] = tmp;
+	tmp = buf[8+1];
+	buf[8+1] = buf[8+3];
+	buf[8+3] = tmp;
+
+	tmp = buf[12+3];
+	buf[12+3] = buf[12+2];
+	buf[12+2] = buf[12+1];
+	buf[12+1] = buf[12+0];
+	buf[12+0] = tmp;
+}
+
+

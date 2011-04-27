@@ -10,15 +10,16 @@ WARN =
 DEBBUG = -ggdb
 CFLAGS = $(DEBBUG) $(WARN)
 INCPATH = -Icunit/include -Iaes/include
-TARGET = example_main.elf
-SIMTARGET = example_main
+BUILD_DIR = build
+TARGET = $(BUILD_DIR)/example_main.elf
+SIMTARGET = $(BUILD_DIR)/example_main
 TFILES = $(wildcard aes/tests/*.c)
 HFILES = $(wildcard */include/*.h)
 
 all: $(TARGET)
 
 clean:
-	rm -r $(TARGET) $(SIMTARGET)
+	rm -rf $(BUILD_DIR)
 
 $(TARGET): $(TFILES) $(HFILES)
 	@$(CC_CROSS) $(CFLAGS) $(INCPATH) -o $(TARGET) $(TFILES)

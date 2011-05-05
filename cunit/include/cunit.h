@@ -71,13 +71,8 @@
  *  Returns:
  *  As a convenience, returns the value of the assertion.
  */
-void CU_assertImplementationFail( BOOL bValue, unsigned int uiLine, char strCondition[], char strFile[], char strFunction[], BOOL bFatal) {}
 BOOL CU_assertImplementation( BOOL bValue, unsigned int uiLine, char strCondition[], char strFile[], char strFunction[], BOOL bFatal)
 {
-  if (bValue == FALSE)
-  {
-	CU_assertImplementationFail(bValue, uiLine, strCondition, strFile, strFunction, bFatal);
-  }
   if (bFatal == TRUE)
   {
 	for (;;) {}
@@ -87,14 +82,9 @@ BOOL CU_assertImplementation( BOOL bValue, unsigned int uiLine, char strConditio
 
 // Asserts that actual == expected. 
 #define CU_ASSERT_INT_EQ(expected, actual) { CU_assertIntEqualImplementation((expected), (actual), __LINE__, ("CU_ASSERT_EQUAL(" #expected "," #actual ")"), __FILE__, "", FALSE); }
-void CU_assertIntEqualImplementationFail(int expected, int actual, unsigned int uiLine, char strCondition[], char strFile[], char strFunction[], BOOL bFatal) {}
 BOOL CU_assertIntEqualImplementation(int expected, int actual, unsigned int uiLine, char strCondition[], char strFile[], char strFunction[], BOOL bFatal)
 {
   BOOL bValue = actual == expected;
-  if (bValue == FALSE)
-  {
-	CU_assertIntEqualImplementationFail(expected, actual, uiLine, strCondition, strFile, strFunction, bFatal);
-  }
   if (bFatal == TRUE)
   {
 	for (;;) {}

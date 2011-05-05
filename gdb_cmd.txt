@@ -1,3 +1,5 @@
-break CU_assertImplementationFail
-break CU_assertIntEqualImplementationFail
+break CU_assertImplementation
+condition 1 bValue==0
+break CU_assertIntEqualImplementation
+condition 2 expected!=actual
 run

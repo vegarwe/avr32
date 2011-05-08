@@ -34,7 +34,7 @@ int inv_s[256] =
  ,0xa0 ,0xe0 ,0x3b ,0x4d ,0xae ,0x2a ,0xf5 ,0xb0 ,0xc8 ,0xeb ,0xbb ,0x3c ,0x83 ,0x53 ,0x99 ,0x61
  ,0x17 ,0x2b ,0x04 ,0x7e ,0xba ,0x77 ,0xd6 ,0x26 ,0xe1 ,0x69 ,0x14 ,0x63 ,0x55 ,0x21 ,0x0c ,0x7d};
 
-void SubBytes(int *buf)
+void SubBytes(unsigned char *buf)
 {
   int i;
   for (i = 0; i < 4*4; i++)
@@ -43,9 +43,9 @@ void SubBytes(int *buf)
   }
 }
 
-void ShiftRows(int *buf)
+void ShiftRows(unsigned char *buf)
 {
-	int tmp;
+	unsigned char tmp;
 	tmp = buf[4+0];
 	buf[4+0] = buf[4+1];
 	buf[4+1] = buf[4+2];
@@ -66,15 +66,15 @@ void ShiftRows(int *buf)
 	buf[12+0] = tmp;
 }
 
-int MDS[16] = 
+unsigned char MDS[16] = 
  {2, 3, 1, 1,
   1, 2, 3, 1,
   1, 1, 2, 3,
   3, 1, 1, 2
  };
-void MixColumn(int *buf, int column)
+void MixColumn(unsigned char *buf, int column)
 {
-	int tmp[4], tamp[4];
+	unsigned char tmp[4], tamp[4];
 	tmp[0] = MDS[ 0+0]*buf[column+ 0] + MDS[ 0+1]*buf[column+ 4] + MDS[ 0+2]*buf[column+ 8] + MDS[ 0+3]*buf[column+12];
 	tmp[1] = MDS[ 4+0]*buf[column+ 0] + MDS[ 4+1]*buf[column+ 4] + MDS[ 4+2]*buf[column+ 8] + MDS[ 4+3]*buf[column+12];
 	tmp[2] = MDS[ 8+0]*buf[column+ 0] + MDS[ 8+1]*buf[column+ 4] + MDS[ 8+2]*buf[column+ 8] + MDS[ 8+3]*buf[column+12];
@@ -85,13 +85,13 @@ void MixColumn(int *buf, int column)
 	buf[column+ 8] = tmp[2];
 	buf[column+12] = tmp[3];
 }
-void MixColumns(int *buf)
+void MixColumns(unsigned char *buf)
 {
 	int i;
 	for (i = 0; i < 4; i++)
 	{
-		MixColumn(buf, i);
-		//gmix_column(buf[i]);
+		//MixColumn(buf, i);
+		gmix_column_wrapper(buf, i);
 	}
 }
 
@@ -116,3 +116,20 @@ void gmix_column(unsigned char *r) {
         r[2] = b[2] ^ a[1] ^ a[0] ^ b[3] ^ a[3]; /* 2 * a2 + a1 + a0 + 3 * a3 */
         r[3] = b[3] ^ a[2] ^ a[1] ^ b[0] ^ a[0]; /* 2 * a3 + a2 + a1 + 3 * a0 */
 }
+
+void gmix_column_wrapper(unsigned char *buf, int column)
+{
+	unsigned char tmp[4];
+	tmp[0] = buf[column+ 0];
+	tmp[1] = buf[column+ 4];
+	tmp[2] = buf[column+ 8];
+	tmp[3] = buf[column+12];
+
+	gmix_column(tmp);
+
+	buf[column+ 0] = tmp[0];
+	buf[column+ 4] = tmp[1];
+	buf[column+ 8] = tmp[2];
+	buf[column+12] = tmp[3];
+}
+

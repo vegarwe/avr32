@@ -4,4 +4,6 @@ break CU_assertIntEqualImplementation
 condition 2 expected!=actual
 #break example_main.c:64
 #break aes.h:88
+#break gmix_column
+#break gmix_column_wrapper
 run

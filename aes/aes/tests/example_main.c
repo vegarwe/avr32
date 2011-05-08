@@ -111,15 +111,6 @@ void test_MixColumns_full_input_low_values(void)
 	}
 }
 
-void test_gmix_column(void)
-{
-	int i;
-	unsigned char expected[] = {198, 198, 198, 198};
-	unsigned char actual[]   = {198, 198, 198, 198};
-	gmix_column(actual);
-	for (i = 0; i < 4; i++) CU_ASSERT_INT_EQ(expected[i], actual[i]);
-}
-
 void test_MixColumns_full_input_high_values(void)
 {
 	int i;
@@ -150,7 +141,6 @@ int main(void)
   test_MixColumns_single_input_col2();
   test_MixColumns_full_input_col2();
   test_MixColumns_full_input_low_values();
-  test_gmix_column();
   test_MixColumns_full_input_high_values();
 
   return 0;

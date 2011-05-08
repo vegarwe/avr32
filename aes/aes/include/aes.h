@@ -74,16 +74,16 @@ int MDS[16] =
  };
 void MixColumn(int *buf, int column)
 {
-	int tmp[4];
-	tmp[0] = MDS[ 0+0]*buf[column+ 0+0] + MDS[ 0+1]*buf[column+ 0+1] + MDS[ 0+2]*buf[column+ 0+2] + MDS[ 0+3]*buf[column+ 0+3];
-	tmp[1] = MDS[ 4+0]*buf[column+ 4+0] + MDS[ 4+1]*buf[column+ 4+1] + MDS[ 4+2]*buf[column+ 4+2] + MDS[ 4+3]*buf[column+ 4+3];
-	tmp[2] = MDS[ 8+0]*buf[column+ 8+0] + MDS[ 8+1]*buf[column+ 8+1] + MDS[ 8+2]*buf[column+ 8+2] + MDS[ 8+3]*buf[column+ 8+3];
-	tmp[3] = MDS[12+0]*buf[column+12+0] + MDS[12+1]*buf[column+12+1] + MDS[12+2]*buf[column+12+2] + MDS[12+3]*buf[column+12+3];
+	int tmp[4], tamp[4];
+	tmp[0] = MDS[ 0+0]*buf[column+ 0] + MDS[ 0+1]*buf[column+ 4] + MDS[ 0+2]*buf[column+ 8] + MDS[ 0+3]*buf[column+12];
+	tmp[1] = MDS[ 4+0]*buf[column+ 0] + MDS[ 4+1]*buf[column+ 4] + MDS[ 4+2]*buf[column+ 8] + MDS[ 4+3]*buf[column+12];
+	tmp[2] = MDS[ 8+0]*buf[column+ 0] + MDS[ 8+1]*buf[column+ 4] + MDS[ 8+2]*buf[column+ 8] + MDS[ 8+3]*buf[column+12];
+	tmp[3] = MDS[12+0]*buf[column+ 0] + MDS[12+1]*buf[column+ 4] + MDS[12+2]*buf[column+ 8] + MDS[12+3]*buf[column+12];
 
-	buf[0] = tmp[0];
-	buf[1] = tmp[1];
-	buf[2] = tmp[2];
-	buf[3] = tmp[3];
+	buf[column+ 0] = tmp[0];
+	buf[column+ 4] = tmp[1];
+	buf[column+ 8] = tmp[2];
+	buf[column+12] = tmp[3];
 }
 void MixColumns(int *buf)
 {
@@ -93,3 +93,4 @@ void MixColumns(int *buf)
 		MixColumn(buf, i);
 	}
 }
+

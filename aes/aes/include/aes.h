@@ -105,3 +105,11 @@ void MixColumns(unsigned char *buf)
 	}
 }
 
+void AddRoundKey(unsigned char *buf, unsigned char *subkey)
+{
+	int i;
+	for (i = 0; i < 4*4; i++)
+	{
+		buf[i] = buf[i] ^ subkey[i];
+	}
+}

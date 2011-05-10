@@ -71,10 +71,10 @@ void test_MixColumns_full_input_col2(void)
 {
 	int i;
 	unsigned char expected[] = {
-		0x00, 0x0f, 0x00, 0x00,
-		0x00, 0x12, 0x00, 0x00,
-		0x00, 0x15, 0x00, 0x00,
-		0x00, 0x10, 0x00, 0x00};
+		0x00,   3, 0x00, 0x00,
+		0x00,   4, 0x00, 0x00,
+		0x00,   9, 0x00, 0x00,
+		0x00,  10, 0x00, 0x00};
 
 	unsigned char actual[] = {
 		0x00, 0x01, 0x00, 0x00,
@@ -93,10 +93,10 @@ void test_MixColumns_full_input_low_values(void)
 {
 	int i;
 	unsigned char expected[] = {
-	     99, 15,  43,  71,
-		102, 18,  46,  74,
-		105, 21,  49,  77,
-		100, 16,  44,  72};
+		 23,   3,  15,  11,
+         16,   4,   8,  12,
+         45,   9,  21,   1,
+         54,  10,  30,   2};
 
 	unsigned char actual[] = {
 		 13,   1,   5,   9,
@@ -147,9 +147,9 @@ int main(void)
 {
   test_SubBytes();
   test_ShiftRows();
-  //test_MixColumns_single_input_col2();
-  //test_MixColumns_full_input_col2();
-  //test_MixColumns_full_input_low_values();
+  test_MixColumns_single_input_col2();
+  test_MixColumns_full_input_col2();
+  test_MixColumns_full_input_low_values();
   test_gmix_column();
   test_MixColumns_single_input_high_values();
 

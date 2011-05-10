@@ -66,33 +66,34 @@ void ShiftRows(unsigned char *buf)
 	buf[12+0] = tmp;
 }
 
-unsigned char MDS[16] = 
- {2, 3, 1, 1,
-  1, 2, 3, 1,
-  1, 1, 2, 3,
-  3, 1, 1, 2
- };
+unsigned char gmul(unsigned char a, unsigned char b) {
+	unsigned char p = 0;
+	unsigned char counter;
+	unsigned char hi_bit_set;
+	for(counter = 0; counter < 8; counter++) {
+		if((b & 1) == 1) 
+			p ^= a;
+		hi_bit_set = (a & 0x80);
+		a <<= 1;
+		if(hi_bit_set == 0x80) 
+			a ^= 0x1b;		
+		b >>= 1;
+	}
+	return p;
+}
+
 void MixColumn(unsigned char *buf, int column)
 {
-	unsigned char tmp[4], tamp[4];
-	tmp[0] = MDS[ 0+0]*buf[column+ 0] + MDS[ 0+1]*buf[column+ 4] + MDS[ 0+2]*buf[column+ 8] + MDS[ 0+3]*buf[column+12];
-	tmp[1] = MDS[ 4+0]*buf[column+ 0] + MDS[ 4+1]*buf[column+ 4] + MDS[ 4+2]*buf[column+ 8] + MDS[ 4+3]*buf[column+12];
-	tmp[2] = MDS[ 8+0]*buf[column+ 0] + MDS[ 8+1]*buf[column+ 4] + MDS[ 8+2]*buf[column+ 8] + MDS[ 8+3]*buf[column+12];
-	tmp[3] = MDS[12+0]*buf[column+ 0] + MDS[12+1]*buf[column+ 4] + MDS[12+2]*buf[column+ 8] + MDS[12+3]*buf[column+12];
-
-	buf[column+ 0] = tmp[0];
-	buf[column+ 4] = tmp[1];
-	buf[column+ 8] = tmp[2];
-	buf[column+12] = tmp[3];
-}
-void MixColumns(unsigned char *buf)
-{
-	int i;
-	for (i = 0; i < 4; i++)
-	{
-		//MixColumn(buf, i);
-		gmix_column_wrapper(buf, i);
+	unsigned char a[4];
+	unsigned char i;
+	for (i = 0; i < 4; i++) {
+		a[i] = buf[column+(i*4)];
 	}
+
+	buf[column+ 0] = gmul(2, a[0]) ^ gmul(3, a[1]) ^ gmul(1, a[2]) ^ gmul(1, a[3]);
+	buf[column+ 4] = gmul(1, a[0]) ^ gmul(2, a[1]) ^ gmul(3, a[2]) ^ gmul(1, a[3]);
+	buf[column+ 8] = gmul(1, a[0]) ^ gmul(1, a[1]) ^ gmul(2, a[2]) ^ gmul(3, a[3]);
+	buf[column+12] = gmul(3, a[0]) ^ gmul(1, a[1]) ^ gmul(1, a[2]) ^ gmul(2, a[3]);
 }
 
 void gmix_column(unsigned char *r) {
@@ -131,5 +132,15 @@ void gmix_column_wrapper(unsigned char *buf, int column)
 	buf[column+ 4] = tmp[1];
 	buf[column+ 8] = tmp[2];
 	buf[column+12] = tmp[3];
+}
+
+void MixColumns(unsigned char *buf)
+{
+	int i;
+	for (i = 0; i < 4; i++)
+	{
+		MixColumn(buf, i);
+		//gmix_column_wrapper(buf, i);
+	}
 }
 
